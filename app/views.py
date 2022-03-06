@@ -43,7 +43,7 @@ def login():
             # You will need to import the appropriate function to do so.
             # Then store the result of that query to a `user` variable so it can be
             # passed to the login_user() method below.
-            user = UserProfile.query.filter_by(username=username, password=password).first()
+            user = UserProfile.query.filter_by(username=username).first()
 
             if user is not None and cphash(user.password, password):
 
@@ -56,6 +56,12 @@ def login():
                 flash('Incorrect username or password', 'error')
     flash_errors(form)                
     return render_template("login.html", form=form)
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    flash("Sucessfully logged out",'sucess')
+    return redirect(url_for("home"))
 
 @app.route('/secure_page')
 @login_required
